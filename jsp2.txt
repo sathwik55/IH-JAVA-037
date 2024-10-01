@@ -1,0 +1,499 @@
+JSP Tags/Elements
+=================
+We have three types of tags in JSP.
+
+1) Scripting Tags 
+================
+
+	i) Scriptlet tag 
+	-----------------
+		ex:
+			<%   code here   %>
+
+	ii) Expression tag 
+	------------------
+		ex:
+			<%=  code here   %>
+
+	iii) Declaration tag 
+	---------------------
+		ex:
+			<%!  code here   %>
+	
+
+2) Directive Tags 
+------------------
+	i) Page Directive tag 
+	--------------------
+		ex:
+			<%@page  attribute=value %>
+
+	ii) Include Directive tag
+	--------------------------
+		ex:
+			<%@include  attribute=value %>
+
+3) Action Tags 
+-------------
+	<jsp:include>
+	<jsp:forward>
+	<jsp:useBean>
+	<jsp:setProperty>
+	<jsp:getProperty>
+	and etc.
+
+JSP comments
+-------------
+	<%-- comment here  --%>
+
+
+i) Scriptlet tag 
+=================
+It is used to declare java code.
+
+syntax:
+--------
+	<%   code here   %>
+
+
+Deployment Directory Structure 
+------------------------------
+JspApp2
+|
+|---Java Resources
+|
+|---WebContent
+	|	
+	|---form.html	
+	|---process.jsp 
+	|
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+----
+In above application we need to add "servlet-api.jar" file in project build path.	
+		
+form.html
+---------
+
+<form action="process.jsp">
+	
+	Name: <input type="text" name="t1"/> 
+	
+	<input type="submit" value="submit"/>
+	
+</form>
+
+
+process.jsp
+------------
+
+<center>
+	<h1>
+		<%
+			
+			String name = request.getParameter("t1");
+		
+			out.println("Welcome :"+name);
+		
+		%>
+	</h1>
+</center>
+
+web.xml
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+Request url
+--------
+	http://localhost:2525/JspApp2/
+
+
+ii) Expression tag 
+===================
+The code which is written in expression tag will return to the output stream of a response so we don't need to declare out.println() to print the data.
+
+syntax:
+-------
+	<%=  code here   %>
+
+Note:
+----	Expression does not allow semicolon.
+
+
+Deployment Directory Structure 
+------------------------------
+JspApp2
+|
+|---Java Resources
+|
+|---WebContent
+	|	
+	|---form.html	
+	|---process.jsp 
+	|
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+----
+In above application we need to add "servlet-api.jar" file in project build path.	
+		
+form.html
+---------
+
+<form action="process.jsp">
+	
+	Name: <input type="text" name="t1"/> 
+	
+	<input type="submit" value="submit"/>
+	
+</form>
+
+
+process.jsp
+------------
+<center>
+	<h1>
+		<% 
+			String name = request.getParameter("t1");
+		%>
+		<%= "Hey! Welcome :"+name  %>
+	</h1>
+</center>
+
+
+web.xml
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+
+Request url
+--------
+	http://localhost:2525/JspApp2/
+
+
+iii) Declaration tag 
+=====================
+It is used to declare fields and methods.
+
+syntax:
+-------
+	<%!  code here   %>
+Deployment Directory Structure 
+------------------------------
+JspApp3
+|
+|---Java Resources
+|
+|---WebContent
+	|	
+	|---index.jsp
+	|
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+index.jsp
+----------
+
+<%!
+		
+		int i = 100;
+
+
+		int cube(int n)
+		{
+			return n*n*n;
+		}
+		
+%>
+
+<center>
+	<h1>
+			<%=  "The value is ="+i %>
+			<br>
+			<%= "Cube of a number is ="+cube(5) %>
+	</h1>
+</center>
+
+
+web.xml
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+ 	
+ 	<welcome-file-list>
+ 		<welcome-file>index.jsp</welcome-file>
+ 	</welcome-file-list>
+ 
+</web-app>
+
+Request url
+----------
+	http://localhost:2525/JspApp3/
+
+
+
+Exception Handling in JSP
+=========================
+Runtime errors are called exceptions.
+
+Exceptions may come anytime in our application.Handling exceptions are safer side for the programmer.
+
+There are two ways to handle the exceptions in jsp.
+
+1) By using errorPage and isErrorPage attribute of page directive tag.
+
+2) By using <error-page> element in web.xml file.
+
+
+1) By using errorPage and isErrorPage attribute of page directive tag
+---------------------------------------------------------------------
+
+Deployment Directory Structure
+------------------------------
+JspApp4
+|
+|---Java Resource
+|
+|---WebContent
+	|	
+	|---form.html
+	|---process.jsp
+	|---error.jsp
+	|	
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+form.html
+---------
+
+<form  action="process.jsp">
+	
+	No1: <input type="text" name="t1"/> <br>
+	
+	No2: <input type="text" name="t2"/> <br>
+	
+	<input type="submit" value="divide"/>
+
+</form>
+
+web.xml
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+process.jsp
+------------
+<%@page errorPage="error.jsp" %>
+
+<%
+	String sno1=request.getParameter("t1");
+	String sno2=request.getParameter("t2");
+	
+	int a=Integer.parseInt(sno1);
+	int b=Integer.parseInt(sno2);
+	
+	int c=a/b;
+
+%>
+<center>
+	<h1>
+		<%= "Divison of two number is ="+c %>
+	</h1>
+</center>
+
+error.jsp
+---------
+<%@page isErrorPage="true" %>
+
+<b>
+	<i>
+		Sorry! Exception occured!
+		
+		<br>
+		
+		<%=  exception  %>
+	</i>
+</b>
+
+Request url
+-----------
+	http://localhost:2525/JspApp4/
+
+
+
+2) By using <error-page> element in web.xml file
+-------------------------------------------------
+This approach is better because we don't need to defined errorPage attribute in each jsp file.
+
+Defining single entry of <error-page> element in web.xml file will handle all types of exceptions.
+
+
+Deployment Directory Structure
+------------------------------
+JspApp4
+|
+|---Java Resource
+|
+|---WebContent
+	|	
+	|---form.html
+	|---process.jsp
+	|---error.jsp
+	|	
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+form.html
+---------
+
+<form  action="process.jsp">
+	
+	No1: <input type="text" name="t1"/> <br>
+	
+	No2: <input type="text" name="t2"/> <br>
+	
+	<input type="submit" value="divide"/>
+
+</form>
+
+web.xml
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  
+  <error-page>
+  	<exception-type>java.lang.Exception</exception-type>
+  	<location>/error.jsp</location>
+  </error-page>
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+
+
+process.jsp
+------------
+<%
+	String sno1=request.getParameter("t1");
+	String sno2=request.getParameter("t2");
+	
+	int a=Integer.parseInt(sno1);
+	int b=Integer.parseInt(sno2);
+	
+	int c=a/b;
+
+%>
+<center>
+	<h1>
+		<%= "Divison of two number is ="+c %>
+	</h1>
+</center>
+
+error.jsp
+---------
+<%@page isErrorPage="true" %>
+
+<b>
+	<i>
+		Sorry! Exception occured!
+		
+		<br>
+		
+		<%=  exception  %>
+	</i>
+</b>
+
+Request url
+-----------
+	http://localhost:2525/JspApp4/
+			
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
